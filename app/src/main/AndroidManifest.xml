@@ -20,7 +20,7 @@
         <activity
             android:name=".view.SecondPage"
             android:exported="false"
-            android:label="@string/title_activity_second_page" />
+            />
         <activity
             android:name=".view.MainActivity"
             android:exported="true"
