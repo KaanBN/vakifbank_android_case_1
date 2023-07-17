@@ -1,6 +1,7 @@
 package com.example.vakifbank_case.view
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -11,6 +12,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var data: String = ""
+
+        if(intent.data!=null){
+            println("boş değil")
+            data = intent.data!!.getQueryParameter("apikey").toString()
+        }
+
+        if(data!=""){
+            println("data: $data")
+            val intent = Intent(this@MainActivity, SecondPage::class.java)
+            intent.putExtra("apikey", data)
+            startActivity(
+                intent
+            )
+        }
     }
 
     fun buttonClick(view: View) {
