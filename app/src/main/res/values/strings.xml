@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">vakifbank_case</string>
+    <string name="app_name">Vakıf Weather</string>
     <string name="edit_api">Api Key</string>
     <string name="enter_text">Enter</string>
     <!-- Strings used for fragments for navigation -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="derece_placeholder">Derece</string>
     <string name="location_placeholder">Konum</string>
+    <string name="icon_image_desc">Icon image</string>
 </resources>

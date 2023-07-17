@@ -22,6 +22,7 @@ class SecondPage : AppCompatActivity() {
         if(intent.extras!=null) {
             intentApi = intent.extras!!.getString("apikey")!!
         }
+
         super.onCreate(savedInstanceState)
         binding = ActivitySecondPage2Binding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,14 +37,12 @@ class SecondPage : AppCompatActivity() {
         secondVievModel.init(application)
         secondVievModel.getLocation(this)
         secondVievModel.observeCurrentLocationLiveData().observe(this, Observer {
-            println("observeCurrentLocationLiveData: $it")
             secondVievModel.getWeather(it.latitude, it.longitude, "hourly,minutely,alerts")
             Geocoder(this).getFromLocation(it.latitude, it.longitude, 1).apply {
                 binding.locationTextView.text = "${this!![0].adminArea}, ${this!![0].countryCode}"
             }
         })
         secondVievModel.observeWeatherLiveData().observe(this, Observer(){
-            println("observeWeatherLiveData: $it")
             binding.apply {
                 binding.recyleView.adapter = WeatherAdapter(it)
             }
