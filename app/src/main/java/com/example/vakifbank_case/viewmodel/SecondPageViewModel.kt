@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.pm.PackageManager
 import android.location.Location
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -25,32 +26,44 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SecondPageViewModel() : ViewModel() {
+class SecondPageViewModel : ViewModel() {
     private var weatherLiveData = MutableLiveData<WeatherResponse>()
+    val loading = MutableLiveData<Boolean>()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val _currentLocation = MutableLiveData<Location>()
-
-    private val permission = Manifest.permission.ACCESS_FINE_LOCATION
-    private val requestCode = 1
 
     val currentLocation : LiveData<Location> = _currentLocation
     fun init(application: Application){
         LocationServices.getFusedLocationProviderClient(application)
     }
-    fun getWeather(lat : Double, lon: Double, exclude: String){
-        RetrofitClient.apiInterface.getWeather(lat, lon, exclude).enqueue(
+    fun getWeather(
+        lat: Double,
+        lon: Double,
+        exclude: String,
+        apikey: String
+    ){
+        loading.value = true
+        RetrofitClient.apiInterface.getWeather(lat, lon, exclude, apikey).enqueue(
             object : Callback<WeatherResponse>{
 
                 override fun onResponse(
                     call: Call<WeatherResponse>,
-                    response: Response<WeatherResponse>
+                    response: Response<WeatherResponse?>
                 ) {
-                    weatherLiveData.value = response.body()!!
-                    return
+                    loading.value = false
+                    if (response.isSuccessful){
+                        weatherLiveData.value = response.body()
+                        return
+                    }
+                    else{
+                        println("Error Happened On ViewModel")
+
+                    }
                 }
 
-                override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
                     println("Error happened")
+                    loading.value = false
                 }
 
             }
@@ -68,12 +81,16 @@ class SecondPageViewModel() : ViewModel() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                application,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                101
-            )
-
+            if (ActivityCompat.shouldShowRequestPermissionRationale(application, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(application, Manifest.permission.ACCESS_COARSE_LOCATION)){
+                Toast.makeText(application, "Location Data Needed To Run", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                ActivityCompat.requestPermissions(
+                    application,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    101
+                )
+            }
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(application)
@@ -93,7 +110,7 @@ class SecondPageViewModel() : ViewModel() {
         return currentLocation
     }
 
-    fun observeWeatherLiveData() : LiveData<WeatherResponse> {
+    fun observeWeatherLiveData(): MutableLiveData<WeatherResponse> {
         return weatherLiveData;
     }
 

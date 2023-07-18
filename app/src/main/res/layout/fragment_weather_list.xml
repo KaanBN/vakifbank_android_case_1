@@ -4,24 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    tools:context=".view.SecondPage">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/loading_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="712dp"
-            android:text="Loading"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".view.WeatherListFrag">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -38,6 +21,7 @@
         android:id="@+id/dereceIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/derece_placeholder"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/recyleView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +35,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="@string/icon_image_desc"
-        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/dereceIdTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -64,7 +47,7 @@
         android:id="@+id/locationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:text="@string/location_placeholder"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/firstWeatherIcon"
         app:layout_constraintEnd_toEndOf="parent"
