@@ -29,6 +29,7 @@ import retrofit2.Response
 class SecondPageViewModel : ViewModel() {
     private var weatherLiveData = MutableLiveData<WeatherResponse>()
     val loading = MutableLiveData<Boolean>()
+    val isError = MutableLiveData<Boolean>()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val _currentLocation = MutableLiveData<Location>()
 
@@ -56,8 +57,7 @@ class SecondPageViewModel : ViewModel() {
                         return
                     }
                     else{
-                        println("Error Happened On ViewModel")
-
+                        isError.value = true
                     }
                 }
 
@@ -112,10 +112,5 @@ class SecondPageViewModel : ViewModel() {
 
     fun observeWeatherLiveData(): MutableLiveData<WeatherResponse> {
         return weatherLiveData;
-    }
-
-    fun loadImage(ImageView: ImageView, image: String){
-        val url = "https://openweathermap.org/img/wn/$image.png"
-        Picasso.get().load(url).into(ImageView)
     }
 }
